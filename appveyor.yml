@@ -1,6 +1,11 @@
 version: 1.0.{build}
 image: Visual Studio 2017
-before_build:
-- cmd: dotnet restore src
-build:
-  verbosity: minimal
+#before_build:
+#- cmd: dotnet restore src
+#build:
+#  verbosity: minimal
+
+build_script:
+  - cmd: cd TestLib
+  - cmd: dotnet restore TestLib.csproj
+  - cmd: dotnet build TestLib.csproj
