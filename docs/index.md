@@ -1,7 +1,4 @@
-##### A web scraping framework for .NET
--------
-
-NScrape is a framework that helps with much of the grunt work involved in web scraping, leaving you to concentrate on the scraping itself. NScrape recommends and supports scraping via the [HTML Agility Pack](http://html-agility-pack.net/), but if you'd like to use string functions or regular expressions, feel free! 
+NScrape is a web scraping framework for .NET that helps with much of the grunt work, leaving you to concentrate on the scraping itself. NScrape recommends and supports scraping via the [HTML Agility Pack](http://html-agility-pack.net/), but if you'd like to use string functions or regular expressions, feel free! 
 
 ## Installation
 Install the NScrape [nuget package](https://www.nuget.org/packages/NScrape/): `Install-Package NScrape`
@@ -18,38 +15,38 @@ Let's implement a scraper to scrape the *condition* and *temperature* values fro
 Scrapers are page-centric; create one for every page you need to scrape. You can implement multiple methods to scrape each bit of data that you're after, or alternately, implement one method and have it return an object containing all of your data. Your choice.
 
 ```c#
-	using NScrape;
-	using NScrape.Forms;
+using NScrape;
+using NScrape.Forms;
 
-	private class TestScraper : Scraper {
-		public TestScraper( string html ) : base( html ) {
-		}
-
-		public string GetConditions() {
-			var node = HtmlDocument.DocumentNode.Descendants().SingleOrDefault( n => n.Attributes.Contains( "class" ) && n.Attributes["class"].Value == "myforecast-current" );
-
-			if ( node != null ) {
-				return node.InnerText;
-			}
-
-			throw new ScrapeException( "Could not scrape conditions.", Html );
-		}
-
-		public string GetTemperature() {
-			var node = HtmlDocument.DocumentNode.Descendants().SingleOrDefault( n => n.Attributes.Contains( "class" ) && n.Attributes["class"].Value == "myforecast-current-lrg" );
-
-			if ( node != null ) {
-				return node.InnerText.Replace( "&deg;", "Â°" );
-			}
-
-			throw new ScrapeException( "Could not scrape temperature.", Html );
-		}
+private class TestScraper : Scraper {
+	public TestScraper( string html ) : base( html ) {
 	}
+
+	public string GetConditions() {
+		var node = HtmlDocument.DocumentNode.Descendants().SingleOrDefault( n => n.Attributes.Contains( "class" ) && n.Attributes["class"].Value == "myforecast-current" );
+
+		if ( node != null ) {
+			return node.InnerText;
+		}
+
+		throw new ScrapeException( "Could not scrape conditions.", Html );
+	}
+
+	public string GetTemperature() {
+		var node = HtmlDocument.DocumentNode.Descendants().SingleOrDefault( n => n.Attributes.Contains( "class" ) && n.Attributes["class"].Value == "myforecast-current-lrg" );
+
+		if ( node != null ) {
+			return node.InnerText.Replace( "&deg;", "°" );
+		}
+
+		throw new ScrapeException( "Could not scrape temperature.", Html );
+	}
+}
 ```
 ### Get the HTML and Scrape It
-Now that we have a scraper, we need to feed it some HTML. **NScrape** provides the **WebClient** class, which can be used to download HTML at a given URL. If the page you want to scrape is accessible in that way, **WebClient** is your ticket.
+Now that we have a scraper, we need to feed it some HTML. NScrape provides the **WebClient** class, which can be used to download HTML at a given URL. If the page you want to scrape is accessible in that way, **WebClient** is your ticket.
 
-In this example, though, we need to populate and submit an HTML form to get the HTML that we want to scrape. For this, **NScrape** provides the **BasicHtmlForm** class, which makes this job easy.
+In this example, though, we need to populate and submit an HTML form to get the HTML that we want to scrape. For this, NScrape provides the **BasicHtmlForm** class, which makes this job easy.
 
 First, instantiate a **WebClient** and use it to instantiate a **BasicHtmlForm**. Tell our form object to load the US National Weather Service page. This page contains multiple forms, so we specify that we want the HTML form identified by the attributes *name=getForecast*.
 
@@ -62,19 +59,19 @@ Next, we submit the form and get the response, which we expect to be a chunk of 
 Finally, we instantiate our scraper with the HTML from the response, and call its methods to scrape the values we need!
 
 ```c#
-	var webClient = new WebClient();
+var webClient = new WebClient();
 
-	var form = new BasicHtmlForm( webClient );
-	form.Load( new Uri( "http://www.weather.gov/" ), new KeyValuePair<string, string>( "name", "getForecast" ) );
-	form.InputControls.Single( c => c.Name == "inputstring" ).Value = "fairbanks, ak";
+var form = new BasicHtmlForm( webClient );
+form.Load( new Uri( "http://www.weather.gov/" ), new KeyValuePair<string, string>( "name", "getForecast" ) );
+form.InputControls.Single( c => c.Name == "inputstring" ).Value = "fairbanks, ak";
 
-	using ( var response = form.Submit() ) {
-		if ( response.ResponseType == WebResponseType.Html ) {
-			var scraper = new TestScraper( ( ( HtmlWebResponse )response ).Html );
-	
-			var conditions = scraper.GetConditions();
-	
-			var temperature = scraper.GetTemperature();
-		}
+using ( var response = form.Submit() ) {
+	if ( response.ResponseType == WebResponseType.Html ) {
+		var scraper = new TestScraper( ( ( HtmlWebResponse )response ).Html );
+
+		var conditions = scraper.GetConditions();
+
+		var temperature = scraper.GetTemperature();
 	}
+}
 ```
