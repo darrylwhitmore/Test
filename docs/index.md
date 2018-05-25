@@ -1,8 +1,7 @@
-# NScrape
-##### A web scraping framework for .Net
+##### A web scraping framework for .NET
 -------
 
-NScrape is a framework that helps with much of the grunt work involved in web scraping, leaving you to concentrate on the scraping itself. NScrape recommends and supports scraping via the [HTML Agility Pack](https://htmlagilitypack.codeplex.com/), but if you'd like to use string functions or regular expressions, feel free! 
+NScrape is a framework that helps with much of the grunt work involved in web scraping, leaving you to concentrate on the scraping itself. NScrape recommends and supports scraping via the [HTML Agility Pack](http://html-agility-pack.net/), but if you'd like to use string functions or regular expressions, feel free! 
 
 ## Installation
 Install the NScrape [nuget package](https://www.nuget.org/packages/NScrape/): `Install-Package NScrape`
@@ -11,10 +10,10 @@ Install the NScrape [nuget package](https://www.nuget.org/packages/NScrape/): `I
 The NScrape API reference is available [here](https://darrylwhitmore.github.io/Test/reference).
 
 ## Tutorial
-We'll use the US National Weather Service page at http://www.weather.gov/ for our example. This page has a simple search form that will allow us to look up the weather for a given location. Try it out: enter a location and click the button to submit the form. In the resulting page, identify the *condition* and *temperature* values; this is what we're going to scrape. View the source using your browser's developer tools. We'll use *class* attributes to identify these values.
+We'll use the US National Weather Service page at [http://www.weather.gov/](http://www.weather.gov/) for our example. This page has a simple search form that will allow us to look up the weather for a given location. Try it out: enter a location and click the button to submit the form. In the resulting page, identify the *condition* and *temperature* values; this is what we're going to scrape. View the source using your browser's developer tools. We'll use *class* attributes to identify these values.
 
 ### Implement a Scraper
-Let's implement a scraper to scrape the *condition* and *temperature* values from the page. We create a class that inherits from the **Scraper** base class. Once instantiated with the page HTML, our class will have the [HTML Agility Pack](https://htmlagilitypack.codeplex.com/) **HtmlDocument** property ready for us to use. All we have to do is implement a couple methods to scrape the values from the HTML.  If you'd rather scrape manually, you can reference the **Html** property instead.
+Let's implement a scraper to scrape the *condition* and *temperature* values from the page. We create a class that inherits from the **Scraper** base class. Once instantiated with the page HTML, our class will have the [HTML Agility Pack](http://html-agility-pack.net/) **HtmlDocument** property ready for us to use. All we have to do is implement a couple methods to scrape the values from the HTML.  If you'd rather scrape manually, you can reference the **Html** property instead.
 
 Scrapers are page-centric; create one for every page you need to scrape. You can implement multiple methods to scrape each bit of data that you're after, or alternately, implement one method and have it return an object containing all of your data. Your choice.
 
