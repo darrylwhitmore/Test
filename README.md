@@ -1,6 +1,9 @@
 # Test
 
-![blah](Assets/Fairbanks Alaska weather developer tools result.jpg)
+![blah](Assets/Fairbanks%20Alaska%20weather%20developer%20tools%20result.jpg)
 
 
-![blah](Assets/Fairbanks Alaska weather HTML result.jpg)
+![blah](Assets/Fairbanks%20Alaska%20weather%20HTML%20result.jpg)
+
+
+
